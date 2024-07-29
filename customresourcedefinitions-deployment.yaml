@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customresourcedefinitions-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customresourcedefinitions
+  template:
+    metadata:
+      labels:
+        app: customresourcedefinitions
+    spec:
+      containers:
+      - name: customresourcedefinitions
+        image: <your-dockerhub-username>/customresourcedefinitions:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customresourcedefinitions-service
+spec:
+  selector:
+    app: customresourcedefinitions
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
